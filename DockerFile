@@ -1,0 +1,5 @@
+From openjdk:11
+ADD ./rules-service/rules/testTemplate.dmn /tmp/
+copy ./application/target/application-*.jar multi-application.jar
+CMD ["java","-jar","-Dspring.profiles.active=dev","-Dserver.port=8081","multi-application.jar"]
+

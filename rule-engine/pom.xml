@@ -19,11 +19,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.db</groupId>
-            <artifactId>common-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.camunda.bpm.extension.dmn</groupId>
             <artifactId>dmn-xlsx-converter</artifactId>
             <version>${camunda-dmn-xlsx-converter.version}</version>

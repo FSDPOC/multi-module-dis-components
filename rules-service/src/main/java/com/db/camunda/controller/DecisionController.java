@@ -2,7 +2,6 @@ package com.db.camunda.controller;
 
 import com.db.camunda.response.BasicResponseMessage;
 import com.db.camunda.service.DmnService;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/decision")
 @Slf4j
-@Api(value = "Camunda Decision Controller")
+//@Api(value = "Camunda Decision Controller")
 public class DecisionController {
 
   private DmnService dmnService;

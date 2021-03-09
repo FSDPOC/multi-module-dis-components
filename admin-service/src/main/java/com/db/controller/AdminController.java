@@ -3,8 +3,6 @@ package com.db.controller;
 
 import com.db.persistence.bean.Book;
 import com.db.persistence.service.ApplicationService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-@Api(value = "Admin Controller")
+//@Api(value = "Admin Controller")
 public class AdminController {
 
   @Autowired ApplicationService applicationService;
@@ -25,7 +23,7 @@ public class AdminController {
   @Autowired MessageSource messageSource;
 
   @GetMapping("/admins")
-  @ApiOperation(value = "test admin path", notes = "testing admin module controller")
+  //@ApiOperation(value = "test admin path", notes = "testing admin module controller")
   public ResponseEntity getAdmin() {
     return ResponseEntity.ok("Admin service module is active");
   }

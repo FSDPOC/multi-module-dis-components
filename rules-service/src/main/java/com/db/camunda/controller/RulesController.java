@@ -2,7 +2,6 @@ package com.db.camunda.controller;
 
 import com.db.camunda.response.BasicResponseMessage;
 import com.db.camunda.service.DmnTemplateService;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping(value = "/camunda")
 @Slf4j
-@Api(value = "Camunda Admin Controller")
+//@Api(value = "Camunda Admin Controller")
 public class RulesController {
 
   private DmnTemplateService dmnTemplateService;

@@ -1,7 +1,7 @@
-package com.db.camunda.controller;
+package com.db.controller;
 
-import com.db.camunda.response.BasicResponseMessage;
-import com.db.camunda.service.DmnTemplateService;
+import com.db.response.RulesBasicResponseMessage;
+import com.db.service.DmnTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +25,15 @@ public class RulesController {
   }
 
   @PostMapping(value = "/rules/import")
-  public ResponseEntity<BasicResponseMessage> importDecisionRules(
+  public ResponseEntity<RulesBasicResponseMessage> importDecisionRules(
       @RequestParam("file") MultipartFile file) {
     try {
       log.info("Importing new excel files");
       dmnTemplateService.convertDmnTemplate(file.getInputStream());
-      return ResponseEntity.ok(new BasicResponseMessage("Rules are imported successfully"));
+      return ResponseEntity.ok(new RulesBasicResponseMessage("Rules are imported successfully"));
     } catch (IOException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(new BasicResponseMessage("Failed to convert DMN template file"));
+          .body(new RulesBasicResponseMessage("Failed to convert DMN template file"));
     }
   }
 
@@ -48,6 +48,6 @@ public class RulesController {
     }
     System.out.println("filename path ::::: " + filename);
     return ResponseEntity.ok(
-        new BasicResponseMessage("Rules service module is active" + filename));
+        new RulesBasicResponseMessage("Rules service module is active" + filename));
   }
 }

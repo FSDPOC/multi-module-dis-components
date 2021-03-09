@@ -1,6 +1,6 @@
-package com.db.camunda.service.impl;
+package com.db.service.impl;
 
-import com.db.camunda.service.DmnTemplateService;
+import com.db.service.DmnTemplateService;
 import org.camunda.bpm.dmn.xlsx.XlsxConverter;
 import org.camunda.bpm.model.dmn.Dmn;
 import org.camunda.bpm.model.dmn.DmnModelInstance;

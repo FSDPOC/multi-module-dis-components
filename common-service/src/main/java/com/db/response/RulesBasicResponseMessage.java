@@ -1,10 +1,10 @@
-package com.db.camunda.response;
+package com.db.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class BasicResponseMessage {
+public class RulesBasicResponseMessage {
   private String message;
 }

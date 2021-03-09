@@ -1,7 +1,7 @@
-package com.db.camunda.service.impl;
+package com.db.service.impl;
 
-import com.db.camunda.config.Configuration;
-import com.db.camunda.service.DmnService;
+import com.db.config.Configuration;
+import com.db.service.DmnService;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.dmn.engine.DmnDecision;
 import org.camunda.bpm.dmn.engine.DmnEngine;

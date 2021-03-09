@@ -12,14 +12,36 @@
     <artifactId>rule-engine</artifactId>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <camunda.version>7.14.0</camunda.version>
+        <camunda-dmn-xlsx-converter.version>0.2.0</camunda-dmn-xlsx-converter.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.db</groupId>
             <artifactId>common-service</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.camunda.bpm.extension.dmn</groupId>
+            <artifactId>dmn-xlsx-converter</artifactId>
+            <version>${camunda-dmn-xlsx-converter.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.camunda.bpm.dmn</groupId>
+            <artifactId>camunda-engine-dmn</artifactId>
+            <version>${camunda.version}</version>
         </dependency>
     </dependencies>
 </project>

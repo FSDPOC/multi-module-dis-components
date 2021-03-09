@@ -1,4 +1,4 @@
-package com.db.camunda.service;
+package com.db.service;
 
 import java.io.IOException;
 import java.io.InputStream;

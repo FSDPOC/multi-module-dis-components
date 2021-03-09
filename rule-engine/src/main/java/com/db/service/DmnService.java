@@ -1,4 +1,4 @@
-package com.db.camunda.service;
+package com.db.service;
 
 public interface DmnService {
   void initDmnEngine();

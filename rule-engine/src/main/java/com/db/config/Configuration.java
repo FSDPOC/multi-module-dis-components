@@ -1,4 +1,4 @@
-package com.db.camunda.config;
+package com.db.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

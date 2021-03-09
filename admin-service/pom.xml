@@ -19,6 +19,11 @@
     <dependencies>
         <dependency>
             <groupId>com.db</groupId>
+            <artifactId>rule-engine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.db</groupId>
             <artifactId>common-service</artifactId>
             <version>${project.version}</version>
         </dependency>

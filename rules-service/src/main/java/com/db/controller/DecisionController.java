@@ -1,7 +1,7 @@
-package com.db.camunda.controller;
+package com.db.controller;
 
-import com.db.camunda.response.BasicResponseMessage;
-import com.db.camunda.service.DmnService;
+import com.db.response.RulesBasicResponseMessage;
+import com.db.service.DmnService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +22,9 @@ public class DecisionController {
   }
 
   @GetMapping(value = "/quarter/{month}")
-  public ResponseEntity<BasicResponseMessage> decideQuarter(@PathVariable("month") Integer month) {
+  public ResponseEntity<RulesBasicResponseMessage> decideQuarter(@PathVariable("month") Integer month) {
     Long quarter = dmnService.decideQuarter(month);
     return ResponseEntity.ok(
-        new BasicResponseMessage("Month " + month + " is in quarter " + quarter));
+        new RulesBasicResponseMessage("Month " + month + " is in quarter " + quarter));
   }
 }

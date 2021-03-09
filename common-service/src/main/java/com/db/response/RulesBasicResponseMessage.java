@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class RulesBasicResponseMessage {
-  private String message;
+    private String message;
 }

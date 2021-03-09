@@ -12,19 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/decision")
 @Slf4j
-//@Api(value = "Camunda Decision Controller")
+// @Api(value = "Camunda Decision Controller")
 public class DecisionController {
 
-  private DmnService dmnService;
+    private DmnService dmnService;
 
-  public DecisionController(DmnService dmnService) {
-    this.dmnService = dmnService;
-  }
+    public DecisionController(DmnService dmnService) {
+        this.dmnService = dmnService;
+    }
 
-  @GetMapping(value = "/quarter/{month}")
-  public ResponseEntity<RulesBasicResponseMessage> decideQuarter(@PathVariable("month") Integer month) {
-    Long quarter = dmnService.decideQuarter(month);
-    return ResponseEntity.ok(
-        new RulesBasicResponseMessage("Month " + month + " is in quarter " + quarter));
-  }
+    @GetMapping(value = "/quarter/{month}")
+    public ResponseEntity<RulesBasicResponseMessage> decideQuarter(
+            @PathVariable("month") Integer month) {
+        Long quarter = dmnService.decideQuarter(month);
+        return ResponseEntity.ok(
+                new RulesBasicResponseMessage("Month " + month + " is in quarter " + quarter));
+    }
 }

@@ -1,7 +1,7 @@
 package com.db.service;
 
 public interface DmnService {
-  void initDmnEngine();
+    void initDmnEngine();
 
-  Long decideQuarter(Integer month);
+    Long decideQuarter(Integer month);
 }

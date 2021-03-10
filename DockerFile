@@ -1,5 +1,5 @@
 From openjdk:11
-ADD ./rules-service/rules/testTemplate.dmn /tmp/
-copy ./application/target/application-*.jar multi-application.jar
-CMD ["java","-jar","-Dspring.profiles.active=dev","-Dserver.port=8081","multi-application.jar"]
-
+ADD ./rule-engine/rules/testTemplate.dmn /tmp/
+ADD ./application-service/src/main/resources/*.properties /tmp/props/
+copy ./application-service/target/application-*.jar multi-application.jar
+CMD ["java","-jar","-Dspring.profiles.active=dev","-Dspring.config.location=file:///tmp/props/","multi-application.jar"]

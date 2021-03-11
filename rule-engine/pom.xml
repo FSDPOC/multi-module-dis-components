@@ -14,6 +14,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <camunda.version>7.14.0</camunda.version>
         <camunda-dmn-xlsx-converter.version>0.2.0</camunda-dmn-xlsx-converter.version>
+        <lombok.version>1.18.12</lombok.version>
     </properties>
     <dependencies>
         <dependency>
@@ -36,5 +37,31 @@
             <artifactId>camunda-engine-dmn</artifactId>
             <version>${camunda.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                   <!-- <source>${java.version}</source>
+                    <target>${java.version}</target>-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

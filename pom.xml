@@ -51,6 +51,13 @@
     <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
     <spotless.version>2.8.1</spotless.version>
     <sonar-maven-plugin.version>3.6.1.1688</sonar-maven-plugin.version>
+
+    <timestamp>${maven.build.timestamp}</timestamp>
+    <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+    <maven.version>${maven.version}</maven.version>
+
+    <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
+    <skip.unit.tests>false</skip.unit.tests>
   </properties>
 
   <dependencies>
@@ -138,6 +145,20 @@
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>build-info</id>
+              <goals>
+                <goal>build-info</goal>
+              </goals>
+              <configuration>
+                    <additionalProperties>
+                      <raghu.machine>WINDOWS 10</raghu.machine>
+                      <maven.version>${maven.version}</maven.version>
+                    </additionalProperties>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -176,6 +197,32 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>2.2.4</version>
+        <executions>
+          <execution>
+            <id>get-the-git-infos</id>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+          <failOnNoGitDirectory>true</failOnNoGitDirectory>
+          <verbose>true</verbose>
+         <!-- <prefix>dis</prefix>-->
+          <generateGitPropertiesFile>true</generateGitPropertiesFile>
+          <generateGitPropertiesFilename>${project.basedir}/src/main/resources/git.properties</generateGitPropertiesFilename>
+          <format>properties</format>
+          <runOnlyOnce>false</runOnlyOnce>
+          <excludeProperties>
+            <excludeProperty>git.user.*</excludeProperty>
+          </excludeProperties>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
@@ -248,6 +295,71 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <configuration>
+          <skipTests>${skip.unit.tests}</skipTests>
+          <excludes>
+            <exclude>**/*IntegrationTest.java</exclude>
+          </excludes>
+          <forkCount>1</forkCount>
+        </configuration>
+      </plugin>
+      <!-- jacoco agent for code coverage -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>prepare-unit-tests</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <!-- prepare agent before integration tests -->
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+              <goal>report-aggregate</goal>
+             <!-- <goal>report</goal>-->
+            </goals>
+           <!-- <phase>pre-integration-test</phase>-->
+            <phase>verify</phase>
+            <configuration>
+              <propertyName>itCoverageAgent</propertyName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+  <!--<profiles>
+    &lt;!&ndash; profile for Unit test only &ndash;&gt;
+    <profile>
+      <id>unit</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    &lt;!&ndash;profile for Integration test only &ndash;&gt;
+    <profile>
+      <id>integration-test</id>
+      <properties>
+        <skip.integration.tests>false</skip.integration.tests>
+        <skip.unit.tests>true</skip.unit.tests>
+      </properties>
+    </profile>
+    &lt;!&ndash; Both Unit and Integration tests combined &ndash;&gt;
+    <profile>
+      <id>testAll</id>
+      <properties>
+        <skip.integration.tests>false</skip.integration.tests>
+        <skip.unit.tests>false</skip.unit.tests>
+      </properties>
+    </profile>
+  </profiles>-->
 </project>

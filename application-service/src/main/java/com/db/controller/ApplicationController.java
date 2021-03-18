@@ -15,6 +15,7 @@ public class ApplicationController {
 
     @GetMapping("/admin")
     public ResponseEntity getAdmin() {
+
         return ResponseEntity.ok("Application service module is active");
     }
 }

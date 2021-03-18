@@ -1,18 +1,20 @@
 package com.db.controller;
 
-import com.db.response.RulesBasicResponseMessage;
+import com.db.model.request.ReasonForCorrespondenceRequest;
+import com.db.model.request.TemplateRdtRequest;
+import com.db.model.response.ReasonForCorrespondenceResponse;
+import com.db.model.response.TemplateRdtResponse;
 import com.db.service.DmnService;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/decision")
+@RequestMapping(value = "/correspondence")
 @Slf4j
-// @Api(value = "Camunda Decision Controller")
 public class DecisionController {
 
     private DmnService dmnService;
@@ -21,11 +23,15 @@ public class DecisionController {
         this.dmnService = dmnService;
     }
 
-    @GetMapping(value = "/quarter/{month}")
-    public ResponseEntity<RulesBasicResponseMessage> decideQuarter(
-            @PathVariable("month") Integer month) {
-        Long quarter = dmnService.decideQuarter(month);
-        return ResponseEntity.ok(
-                new RulesBasicResponseMessage("Month " + month + " is in quarter " + quarter));
+    @PostMapping(value = "/reason")
+    public List<ReasonForCorrespondenceResponse> queryReasonForCorrespondence(
+            @RequestBody ReasonForCorrespondenceRequest request) throws Exception {
+        return dmnService.decideReason(request);
+    }
+
+    @PostMapping(value = "/template")
+    public List<TemplateRdtResponse> queryTemplateRdt(
+        @RequestBody TemplateRdtRequest request) throws Exception {
+        return dmnService.decideTemplateRdt(request);
     }
 }

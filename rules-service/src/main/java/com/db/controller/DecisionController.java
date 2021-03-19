@@ -1,7 +1,11 @@
 package com.db.controller;
 
+import com.db.model.request.ExpiryInformationRequest;
+import com.db.model.request.OutputChannelRequest;
 import com.db.model.request.ReasonForCorrespondenceRequest;
 import com.db.model.request.TemplateRdtRequest;
+import com.db.model.response.ExpiryInformationResponse;
+import com.db.model.response.OutputChannelResponse;
 import com.db.model.response.ReasonForCorrespondenceResponse;
 import com.db.model.response.TemplateRdtResponse;
 import com.db.service.DmnService;
@@ -33,5 +37,17 @@ public class DecisionController {
     public List<TemplateRdtResponse> queryTemplateRdt(
         @RequestBody TemplateRdtRequest request) throws Exception {
         return dmnService.decideTemplateRdt(request);
+    }
+
+    @PostMapping(value = "/channel")
+    public List<OutputChannelResponse> queryOutputChannel(
+        @RequestBody OutputChannelRequest request) throws Exception {
+        return dmnService.decideOutputChannel(request);
+    }
+
+    @PostMapping(value = "/expiry")
+    public List<ExpiryInformationResponse> queryExpiry(
+        @RequestBody ExpiryInformationRequest request) throws Exception {
+        return dmnService.decideExpiryInformation(request);
     }
 }

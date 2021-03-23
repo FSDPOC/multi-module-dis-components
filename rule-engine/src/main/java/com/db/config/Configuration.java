@@ -13,5 +13,5 @@ import org.springframework.stereotype.Component;
 @Data
 public class Configuration {
 
-    private String dmnFilePath;
+  private String dmnFilePath;
 }

@@ -8,40 +8,27 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>rule-engine</artifactId>
-
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <camunda.version>7.14.0</camunda.version>
-        <poi.version>5.0.0</poi.version>
-        <freemarker.version>2.3.30</freemarker.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.db</groupId>
             <artifactId>common-service</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>${freemarker.version}</version>
         </dependency>
         <dependency>
             <groupId>org.camunda.bpm.dmn</groupId>
             <artifactId>camunda-engine-dmn</artifactId>
-            <version>${camunda.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>${poi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
         </dependency>
     </dependencies>
 </project>

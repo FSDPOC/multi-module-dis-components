@@ -12,6 +12,7 @@ import com.db.model.response.TemplateRdtResponse;
 import com.db.persistence.entity.DmnTemplate;
 import com.db.persistence.repository.DmnTemplateRepository;
 import com.db.service.DmnService;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,54 +34,51 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class DmnServiceImpl implements DmnService {
 
-    private DmnEngine dmnEngine;
-    private DmnDecision decision;
-    private DmnTemplateRepository dmnTemplateRepository;
-    private ConcurrentMap<String, DmnDecision> decisionMap;
+  private DmnEngine dmnEngine;
+  private DmnDecision decision;
+  private DmnTemplateRepository dmnTemplateRepository;
+  private ConcurrentMap<String, DmnDecision> decisionMap;
 
-    public DmnServiceImpl(DmnTemplateRepository dmnTemplateRepository) {
-        this.dmnTemplateRepository = dmnTemplateRepository;
-        this.decisionMap = new ConcurrentHashMap<>();
-    }
+  public DmnServiceImpl(DmnTemplateRepository dmnTemplateRepository) {
+    this.dmnTemplateRepository = dmnTemplateRepository;
+    this.decisionMap = new ConcurrentHashMap<>();
+  }
 
-    @PostConstruct
-    @Override
-    public void loadDecision() {
-        dmnEngine = DmnEngineConfiguration.createDefaultDmnEngineConfiguration().buildEngine();
-        List<DmnTemplate> templateList = dmnTemplateRepository.findAll();
-        templateList.forEach(
-            t -> {
-                DmnModelInstance dmnModelInstance =
-                    Dmn.readModelFromStream(
-                        IOUtils.toInputStream(t.getTemplate()));
-                decisionMap.put(t.getType(),
-                    dmnEngine.parseDecision(t.getType(), dmnModelInstance));
-            }
-        );
-    }
+  @PostConstruct
+  @Override
+  public void loadDecision() {
+    dmnEngine = DmnEngineConfiguration.createDefaultDmnEngineConfiguration().buildEngine();
+    List<DmnTemplate> templateList = dmnTemplateRepository.findAll();
+    templateList.forEach(
+        t -> {
+          DmnModelInstance dmnModelInstance =
+              Dmn.readModelFromStream(IOUtils.toInputStream(t.getTemplate(),
+                  Charset.defaultCharset()));
+          decisionMap.put(t.getType(), dmnEngine.parseDecision(t.getType(), dmnModelInstance));
+        });
+  }
 
-    public Long decideQuarter(Integer month) {
-        if (decision == null) loadDecision();
+  public Long decideQuarter(Integer month) {
+    if (decision == null) loadDecision();
 
-        VariableMap variables = Variables.createVariables().putValue("month", month);
-        Long quarter =
-                dmnEngine
-                        .evaluateDecision(decision, variables)
-                        .getSingleResult()
-                        .<Long>getEntry("quarter");
-        log.info("quarter is {}", quarter);
-        return quarter;
-    }
+    VariableMap variables = Variables.createVariables().putValue("month", month);
+    Long quarter =
+        dmnEngine.evaluateDecision(decision, variables).getSingleResult().<Long>getEntry("quarter");
+    log.info("quarter is {}", quarter);
+    return quarter;
+  }
 
-    @Override
-    public List<ReasonForCorrespondenceResponse> decideReason(ReasonForCorrespondenceRequest request) throws Exception {
-        if (!decisionMap.containsKey(Constants.DMN_RULE_TYPE_REASON_FOR_CORRESPONDENCE))
-            throw new Exception("No rules setup for " + Constants.DMN_RULE_TYPE_REASON_FOR_CORRESPONDENCE);
+  @Override
+  public List<ReasonForCorrespondenceResponse> decideReason(ReasonForCorrespondenceRequest request)
+      throws Exception {
+    if (!decisionMap.containsKey(Constants.DMN_RULE_TYPE_REASON_FOR_CORRESPONDENCE))
+      throw new Exception(
+          "No rules setup for " + Constants.DMN_RULE_TYPE_REASON_FOR_CORRESPONDENCE);
 
-        DmnDecision decision = decisionMap.get(Constants.DMN_RULE_TYPE_REASON_FOR_CORRESPONDENCE);
+    DmnDecision decision = decisionMap.get(Constants.DMN_RULE_TYPE_REASON_FOR_CORRESPONDENCE);
 
-        VariableMap variables = Variables
-            .createVariables()
+    VariableMap variables =
+        Variables.createVariables()
             .putValue("ProcessProfile", request.getProcessProfile())
             .putValue("OrderType", request.getOrderType())
             .putValue("ProductGroup", request.getProductGroup())
@@ -92,96 +90,95 @@ public class DmnServiceImpl implements DmnService {
             .putValue("NonCustomerFlag", request.getNonCustomerFlag())
             .putValue("CorrespondenceType", request.getCorrespondenceType());
 
-        List<Map<String, Object>> resultList = dmnEngine
-            .evaluateDecision(decision, variables)
-            .getResultList();
+    List<Map<String, Object>> resultList =
+        dmnEngine.evaluateDecision(decision, variables).getResultList();
 
-        return resultList.stream()
-            .map(m -> ReasonForCorrespondenceResponse
-                .builder()
-                .categories((String)m.get("Categories"))
-                .reasons((String)m.get("Reasons"))
-                .build()
-            ).collect(Collectors.toList());
-    }
+    return resultList.stream()
+        .map(
+            m ->
+                ReasonForCorrespondenceResponse.builder()
+                    .categories((String) m.get("Categories"))
+                    .reasons((String) m.get("Reasons"))
+                    .build())
+        .collect(Collectors.toList());
+  }
 
-    @Override
-    public List<TemplateRdtResponse> decideTemplateRdt(TemplateRdtRequest request)
-        throws Exception {
-        if (!decisionMap.containsKey(Constants.DMN_RULE_TYPE_TEMPLATE_RDT))
-            throw new Exception("No rules setup for " + Constants.DMN_RULE_TYPE_TEMPLATE_RDT);
+  @Override
+  public List<TemplateRdtResponse> decideTemplateRdt(TemplateRdtRequest request) throws Exception {
+    if (!decisionMap.containsKey(Constants.DMN_RULE_TYPE_TEMPLATE_RDT))
+      throw new Exception("No rules setup for " + Constants.DMN_RULE_TYPE_TEMPLATE_RDT);
 
-        DmnDecision decision = decisionMap.get(Constants.DMN_RULE_TYPE_TEMPLATE_RDT);
-        VariableMap variables = Variables
-            .createVariables()
+    DmnDecision decision = decisionMap.get(Constants.DMN_RULE_TYPE_TEMPLATE_RDT);
+    VariableMap variables =
+        Variables.createVariables()
             .putValue("Categories", request.getCategories())
             .putValue("Reasons", request.getReasons());
 
-        List<Map<String, Object>> resultList = dmnEngine
-            .evaluateDecision(decision, variables)
-            .getResultList();
+    List<Map<String, Object>> resultList =
+        dmnEngine.evaluateDecision(decision, variables).getResultList();
 
-        return resultList.stream()
-            .map(m -> TemplateRdtResponse
-                .builder()
-                .templateName((String)m.get("TemplateName"))
-                .textBlockNames((String)m.get("TextblockNames"))
-                .rdtId((String)m.get("RDRID"))
-                .build()
-            ).collect(Collectors.toList());
-    }
+    return resultList.stream()
+        .map(
+            m ->
+                TemplateRdtResponse.builder()
+                    .templateName((String) m.get("TemplateName"))
+                    .textBlockNames((String) m.get("TextblockNames"))
+                    .rdtId((String) m.get("RDRID"))
+                    .build())
+        .collect(Collectors.toList());
+  }
 
-    @Override
-    public List<OutputChannelResponse> decideOutputChannel(OutputChannelRequest request)
-        throws Exception {
-        if (!decisionMap.containsKey(Constants.DMN_RULE_TYPE_OUTPUT_CHANNEL))
-            throw new Exception("No rules setup for " + Constants.DMN_RULE_TYPE_OUTPUT_CHANNEL);
+  @Override
+  public List<OutputChannelResponse> decideOutputChannel(OutputChannelRequest request)
+      throws Exception {
+    if (!decisionMap.containsKey(Constants.DMN_RULE_TYPE_OUTPUT_CHANNEL))
+      throw new Exception("No rules setup for " + Constants.DMN_RULE_TYPE_OUTPUT_CHANNEL);
 
-        DmnDecision decision = decisionMap.get(Constants.DMN_RULE_TYPE_OUTPUT_CHANNEL);
-        VariableMap variables = Variables
-            .createVariables()
+    DmnDecision decision = decisionMap.get(Constants.DMN_RULE_TYPE_OUTPUT_CHANNEL);
+    VariableMap variables =
+        Variables.createVariables()
             .putValue("CustomerType", request.getCustomerType())
             .putValue("OnlineBankingCustomer", request.getOnlineBankingCustomer())
             .putValue("Institute", request.getInstitute());
 
-        List<Map<String, Object>> resultList = dmnEngine
-            .evaluateDecision(decision, variables)
-            .getResultList();
+    List<Map<String, Object>> resultList =
+        dmnEngine.evaluateDecision(decision, variables).getResultList();
 
-        return resultList.stream()
-            .map(m -> OutputChannelResponse
-                .builder()
-                .outputChannel((String)m.get("OutputChannel"))
-                .outputChannelOverrideFlag((String)m.get("OutputChannelOverrideFlag"))
-                .build()
-            ).collect(Collectors.toList());
-    }
+    return resultList.stream()
+        .map(
+            m ->
+                OutputChannelResponse.builder()
+                    .outputChannel((String) m.get("OutputChannel"))
+                    .outputChannelOverrideFlag((String) m.get("OutputChannelOverrideFlag"))
+                    .build())
+        .collect(Collectors.toList());
+  }
 
-    @Override
-    public List<ExpiryInformationResponse> decideExpiryInformation(ExpiryInformationRequest request)
-        throws Exception {
-        if (!decisionMap.containsKey(Constants.DMN_RULE_TYPE_EXPIRY_INFORMATION))
-            throw new Exception("No rules setup for " + Constants.DMN_RULE_TYPE_EXPIRY_INFORMATION);
+  @Override
+  public List<ExpiryInformationResponse> decideExpiryInformation(ExpiryInformationRequest request)
+      throws Exception {
+    if (!decisionMap.containsKey(Constants.DMN_RULE_TYPE_EXPIRY_INFORMATION))
+      throw new Exception("No rules setup for " + Constants.DMN_RULE_TYPE_EXPIRY_INFORMATION);
 
-        DmnDecision decision = decisionMap.get(Constants.DMN_RULE_TYPE_EXPIRY_INFORMATION);
-        VariableMap variables = Variables
-            .createVariables()
+    DmnDecision decision = decisionMap.get(Constants.DMN_RULE_TYPE_EXPIRY_INFORMATION);
+    VariableMap variables =
+        Variables.createVariables()
             .putValue("Categories", request.getCategories())
             .putValue("Reasons", request.getReasons())
             .putValue("Priority", request.getPriority())
             .putValue("InputChannel", request.getInputChannel());
 
-        List<Map<String, Object>> resultList = dmnEngine
-            .evaluateDecision(decision, variables)
-            .getResultList();
+    List<Map<String, Object>> resultList =
+        dmnEngine.evaluateDecision(decision, variables).getResultList();
 
-        return resultList.stream()
-            .map(m -> ExpiryInformationResponse
-                .builder()
-                .expireinDays((String)m.get("ExpireinDays"))
-                .expirationAction((String)m.get("ExpirationAction"))
-                .expirationChangeFlag((String)m.get("ExpirationChangeFlag"))
-                .build()
-            ).collect(Collectors.toList());
-    }
+    return resultList.stream()
+        .map(
+            m ->
+                ExpiryInformationResponse.builder()
+                    .expireinDays((String) m.get("ExpireinDays"))
+                    .expirationAction((String) m.get("ExpirationAction"))
+                    .expirationChangeFlag((String) m.get("ExpirationChangeFlag"))
+                    .build())
+        .collect(Collectors.toList());
+  }
 }

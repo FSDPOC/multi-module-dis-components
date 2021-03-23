@@ -18,11 +18,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class DmnTemplate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    private String type;
-    private String status;
-    @Lob private String template;
+  private String type;
+  private String status;
+  @Lob private String template;
 }

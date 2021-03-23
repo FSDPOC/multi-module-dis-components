@@ -5,5 +5,5 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DmnTemplateRepository extends JpaRepository<DmnTemplate, Long> {
-    Optional<DmnTemplate> findByType(String type);
+  Optional<DmnTemplate> findByType(String type);
 }

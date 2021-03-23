@@ -11,9 +11,15 @@ import com.db.model.response.TemplateRdtResponse;
 import java.util.List;
 
 public interface DmnService {
-    void loadDecision();
-    List<ReasonForCorrespondenceResponse> decideReason(ReasonForCorrespondenceRequest request) throws Exception;
-    List<TemplateRdtResponse> decideTemplateRdt(TemplateRdtRequest request) throws Exception;
-    List<OutputChannelResponse> decideOutputChannel(OutputChannelRequest request) throws Exception;
-    List<ExpiryInformationResponse> decideExpiryInformation(ExpiryInformationRequest request) throws Exception;
+  void loadDecision();
+
+  List<ReasonForCorrespondenceResponse> decideReason(ReasonForCorrespondenceRequest request)
+      throws Exception;
+
+  List<TemplateRdtResponse> decideTemplateRdt(TemplateRdtRequest request) throws Exception;
+
+  List<OutputChannelResponse> decideOutputChannel(OutputChannelRequest request) throws Exception;
+
+  List<ExpiryInformationResponse> decideExpiryInformation(ExpiryInformationRequest request)
+      throws Exception;
 }

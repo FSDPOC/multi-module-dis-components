@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/app")
 public class ApplicationController {
 
-    @Autowired MessageSource messageSource;
+  @Autowired MessageSource messageSource;
 
-    @GetMapping("/admin")
-    public ResponseEntity getAdmin() {
+  @GetMapping("/admin")
+  public ResponseEntity getAdmin() {
 
-        return ResponseEntity.ok("Application service module is active");
-    }
+    return ResponseEntity.ok("Application service module is active");
+  }
 }

@@ -21,33 +21,33 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class DecisionController {
 
-    private DmnService dmnService;
+  private DmnService dmnService;
 
-    public DecisionController(DmnService dmnService) {
-        this.dmnService = dmnService;
-    }
+  public DecisionController(DmnService dmnService) {
+    this.dmnService = dmnService;
+  }
 
-    @PostMapping(value = "/reason")
-    public List<ReasonForCorrespondenceResponse> queryReasonForCorrespondence(
-            @RequestBody ReasonForCorrespondenceRequest request) throws Exception {
-        return dmnService.decideReason(request);
-    }
+  @PostMapping(value = "/reason")
+  public List<ReasonForCorrespondenceResponse> queryReasonForCorrespondence(
+      @RequestBody ReasonForCorrespondenceRequest request) throws Exception {
+    return dmnService.decideReason(request);
+  }
 
-    @PostMapping(value = "/template")
-    public List<TemplateRdtResponse> queryTemplateRdt(
-        @RequestBody TemplateRdtRequest request) throws Exception {
-        return dmnService.decideTemplateRdt(request);
-    }
+  @PostMapping(value = "/template")
+  public List<TemplateRdtResponse> queryTemplateRdt(@RequestBody TemplateRdtRequest request)
+      throws Exception {
+    return dmnService.decideTemplateRdt(request);
+  }
 
-    @PostMapping(value = "/channel")
-    public List<OutputChannelResponse> queryOutputChannel(
-        @RequestBody OutputChannelRequest request) throws Exception {
-        return dmnService.decideOutputChannel(request);
-    }
+  @PostMapping(value = "/channel")
+  public List<OutputChannelResponse> queryOutputChannel(@RequestBody OutputChannelRequest request)
+      throws Exception {
+    return dmnService.decideOutputChannel(request);
+  }
 
-    @PostMapping(value = "/expiry")
-    public List<ExpiryInformationResponse> queryExpiry(
-        @RequestBody ExpiryInformationRequest request) throws Exception {
-        return dmnService.decideExpiryInformation(request);
-    }
+  @PostMapping(value = "/expiry")
+  public List<ExpiryInformationResponse> queryExpiry(@RequestBody ExpiryInformationRequest request)
+      throws Exception {
+    return dmnService.decideExpiryInformation(request);
+  }
 }

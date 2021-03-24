@@ -12,7 +12,6 @@ import com.db.model.response.TemplateRdtResponse;
 import com.db.persistence.entity.DmnTemplate;
 import com.db.persistence.repository.DmnTemplateRepository;
 import com.db.service.DmnService;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,9 +50,10 @@ public class DmnServiceImpl implements DmnService {
     List<DmnTemplate> templateList = dmnTemplateRepository.findAll();
     templateList.forEach(
         t -> {
-          DmnModelInstance dmnModelInstance =
-              Dmn.readModelFromStream(IOUtils.toInputStream(t.getTemplate(),
-                  Charset.defaultCharset()));
+          DmnModelInstance dmnModelInstance = null;
+
+          dmnModelInstance = Dmn.readModelFromStream(IOUtils.toInputStream(t.getTemplate()));
+
           decisionMap.put(t.getType(), dmnEngine.parseDecision(t.getType(), dmnModelInstance));
         });
   }

@@ -12,10 +12,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class MultipleApplicationTests {
 
-    @Test
-    public void getAdmin() {
-        assertEquals(
-                ResponseEntity.ok("Application service module is active"),
-                ResponseEntity.ok("Application service module is active"));
-    }
+  @Test
+  public void getAdmin() {
+    assertEquals(
+        ResponseEntity.ok("Application service module is active"),
+        ResponseEntity.ok("Application service module is active"));
+  }
 }

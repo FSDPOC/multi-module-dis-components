@@ -8,60 +8,27 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>rule-engine</artifactId>
-
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <camunda.version>7.14.0</camunda.version>
-        <camunda-dmn-xlsx-converter.version>0.2.0</camunda-dmn-xlsx-converter.version>
-        <lombok.version>1.18.12</lombok.version>
-    </properties>
     <dependencies>
         <dependency>
-            <groupId>org.camunda.bpm.extension.dmn</groupId>
-            <artifactId>dmn-xlsx-converter</artifactId>
-            <version>${camunda-dmn-xlsx-converter.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.db</groupId>
+            <artifactId>common-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
         </dependency>
         <dependency>
             <groupId>org.camunda.bpm.dmn</groupId>
             <artifactId>camunda-engine-dmn</artifactId>
-            <version>${camunda.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>compile</scope>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                   <!-- <source>${java.version}</source>
-                    <target>${java.version}</target>-->
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 // @Api(value = "Correspondence Admin Controller")
 public class CorrespondenceController {
 
-    @GetMapping("/admin")
-    public ResponseEntity getCorrespondence() {
+  @GetMapping("/admin")
+  public ResponseEntity getCorrespondence() {
 
-        return ResponseEntity.ok("Correspondence service module is active");
-    }
+    return ResponseEntity.ok("Correspondence service module is active");
+  }
 }
